@@ -17,5 +17,4 @@ urlpatterns = patterns('',
     (r'^addpatient/$', views.add_patient),
     (r'^dashboard/$', views.dashboard),
     (r'^patientlist/$', views.list_patients),
-
 )
