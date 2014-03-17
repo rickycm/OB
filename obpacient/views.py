@@ -56,7 +56,6 @@ def add_patient(request):
     user = request.user
 
     if request.method == 'GET':
-        print("*************1111111111111")
         renew = request.GET.get('renew')
         if renew == 'true':
             try:
@@ -74,10 +73,8 @@ def add_patient(request):
                               context_instance=RequestContext(request))
     else:
         form = PatientForm(request.POST)
-        print("*************2222222222")
         #if form.is_valid():
         if True:
-            print("*************" + form.data['p_codeG'])
             p_codeG = form.data['p_codeG']
             p_codeP = form.data['p_codeP']
             p_codeA = form.data['p_codeA']
@@ -107,7 +104,6 @@ def add_patient(request):
 
             return HttpResponseRedirect('/patientlist/')
         else:
-            print("*************33333333333")
             return render_to_response('patientform.html', {'title': 'New Patient', 'form': form}, context_instance=RequestContext(request))
 
 
