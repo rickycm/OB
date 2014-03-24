@@ -14,38 +14,18 @@
     <link rel="stylesheet" href="{% static 'jqm/jquery.mobile-1.3.2.min.css' %}" />
     -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap-responsive.css' %}" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="{% static 'js/html5shiv.js' %}"></script>
     <![endif]-->
     {% endblock %}
     {% block user_css %}
-        <style>
-          body {
-            max-width: 800px
-            background-color: #f5f5f5;
-          padding-top: 60px;
-          padding-bottom: 20px;
-          }
-            .ui-page {
-                max-width: 800px !important;
-                margin: 0 auto !important;
-                position: relative !important;
-            }
-            label.error {
-                color: red;
-                width: 100%;
-                float: none;
-            }
-        </style>
     {% endblock %}
     {% block bootstrap_js %}
     <!--
 	<script src="{% static 'jqm/jquery-1.10.2.min.js' %}"></script>
     <script src="{% static 'jqm/jquery.mobile-1.3.2.min.js' %}"></script>
     -->
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
     {% endblock %}
     {% block user_head_js %}
     {% endblock %}
@@ -69,7 +49,7 @@
 
   {% block user_foot_js %}
     <script src="{% static 'js/jquery-1.11.0.js' %}"></script>
-    <script src="{% static 'js/jqBootstrapValidation.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script>
       $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
     </script>

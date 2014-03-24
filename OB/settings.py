@@ -96,8 +96,8 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'resources'),
-    #os.path.join(PROJECT_ROOT, 'assets'),
+    #os.path.join(PROJECT_ROOT, 'resources'),
+    os.path.join(PROJECT_ROOT, 'static'),
 )
 
 # List of callables that know how to import templates from various sources.
