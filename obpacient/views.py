@@ -138,7 +138,7 @@ def list_patients(rq):
         startPos = (curPage - 1) * ONE_PAGE_OF_DATA
         endPos = startPos + ONE_PAGE_OF_DATA
 
-        patients = patient.objects.filter(doctor_id=user.id)[startPos:endPos]
+        patients = patient.objects.filter(doctor_id=user.id, p_state__lt=10)[startPos:endPos]
         if curPage == 1 and allPage == 1:
             allPostCounts = patient.objects.filter(doctor_id=user.id).count()
             allPage = allPostCounts / ONE_PAGE_OF_DATA

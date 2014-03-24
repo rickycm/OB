@@ -63,6 +63,7 @@
     </div>
 
     <div id="content">
+      {% if True %}
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -110,6 +111,13 @@
         {% endif %}
     </div>
     <p></p>
+
+      {% else %}
+         <p></p>
+         <div style="text-align:center">
+             <P>You don't have any patient now.</P>
+         </div>
+      {% endif %}
 
     </div>
 </div> <!-- /container -->
