@@ -87,7 +87,17 @@
                         <td>{{ patient.p_LMP|date:"Y-m-d" }}</td>
                         <td>{{ patient.p_EDC|date:"Y-m-d" }}</td>
                         <td>{{ patient.p_conception|date:"Y-m-d" }}</td>
-                        <td>{{ patient.get_p_state_display }}</td>
+                        <td>
+                            {% if patient.p_state == 1 %}
+                            <font color="SteelBlue">{{ patient.get_p_state_display }}</font>
+                            {% elif patient.p_state == 2 %}
+                            <font color="Aquamarine">{{ patient.get_p_state_display }}</font>
+                            {% elif patient.p_state == 3 %}
+                            <font color="Tomato"><strong>{{ patient.get_p_state_display }}</strong></font>
+                            {% elif patient.p_state == 4 %}
+                            <font color="Orange">{{ patient.get_p_state_display }}</font>
+                            {% endif %}
+                        </td>
                         <td>{{ patient.p_diseaseHis }}</td>
                     </tr>
                 {% endfor %}
