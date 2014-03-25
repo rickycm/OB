@@ -143,7 +143,6 @@ def list_patients(rq):
             edc = patient_one.p_EDC
             daynow = datetime.strptime(datetime.now().strftime('%m/%d/%Y'), '%m/%d/%Y').date()
             d = (edc - daynow).days
-            print d
             if d>=0 and d<=10:
                 patient_one.p_state = 3
                 patient_one.save()
