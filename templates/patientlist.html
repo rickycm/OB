@@ -25,7 +25,7 @@
         }
     </style>
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/datepicker3.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/theme.dropbox.css' %}" />
 {% endblock %}
 
 
@@ -65,7 +65,7 @@
     <div id="content">
       {% if True %}
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" id="patientTable">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -75,7 +75,7 @@
                         <th>EDC</th>
                         <th>Conception</th>
                         <th>State</th>
-                        <th>Disease History</th>
+                        <th data-defaultsort='disabled'>Disease History</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,5 +127,30 @@
 
 {% block user_foot_js %}
 {{ block.super }}
+    <script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
+    <script src="{% static 'js/jquery.tablesorter.widgets.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+$(function(){
+$("#patientTable").tablesorter(
+{
+	theme : 'dropbox',
+
+	sortList : [[4,0],[6,0]],
+
+    // header layout template; {icon} needed for some themes
+    headerTemplate : '{content}{icon}',
+
+	// initialize column styling of the table
+    widgets : ["columns"],
+	widgetOptions : {
+      // change the default column class names
+      // primary is the first column sorted, secondary is the second, tertiary....etc
+      columns : [ "primary", "secondary" ]
+	}
+});
+});
+});
+</script>
 
 {% endblock %}

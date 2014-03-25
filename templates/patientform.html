@@ -112,7 +112,7 @@
           <div class="form-group">
             <label for="p_LMP" class="col-sm-2 control-label">Last Menstrual Period (LMP):</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="p_LMP" name="p_LMP" readonly>
+              <input type="text" class="form-control" id="p_LMP" name="p_LMP" readonly data-date-format="yyyy-mm-dd">
             </div>
           </div>
             <div class="form-group">
@@ -213,7 +213,7 @@
                             enabled: true,
                             validators: {
                                 date: {
-                                    format: 'MM/DD/YYYY',
+                                    format: 'YYYY-MM-DD',
                                     message: 'The value is not a valid date'
                                 },
                                 notEmpty: {

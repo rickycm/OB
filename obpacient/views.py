@@ -80,10 +80,10 @@ def add_patient(request):
             p_codeA = form.data['p_codeA']
             p_LMP_data = form.data['p_LMP']
             lmp_date = datetime.strptime(p_LMP_data, '%m/%d/%Y').date()
-            print(lmp_date)
+            #print(lmp_date)
             p_EDC_data = lmp_date + timedelta(days=280)
             p_conception_data = lmp_date + timedelta(days=14)
-            print(p_conception_data)
+            #print(p_conception_data)
 
             p = patient.objects.create(
                 p_name = form.data['p_name'],
@@ -139,6 +139,15 @@ def list_patients(rq):
         endPos = startPos + ONE_PAGE_OF_DATA
 
         patients = patient.objects.filter(doctor_id=user.id, p_state__lt=10)[startPos:endPos]
+        for patient_one in patients:
+            edc = patient_one.p_EDC
+            daynow = datetime.strptime(datetime.now().strftime('%m/%d/%Y'), '%m/%d/%Y').date()
+            d = (edc - daynow).days
+            print d
+            if d>=0 and d<=10:
+                patient_one.p_state = 3
+                patient_one.save()
+
         if curPage == 1 and allPage == 1:
             allPostCounts = patient.objects.filter(doctor_id=user.id).count()
             allPage = allPostCounts / ONE_PAGE_OF_DATA
