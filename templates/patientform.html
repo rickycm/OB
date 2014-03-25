@@ -66,7 +66,7 @@
     <div id="content">
 
 
-        <form class="form-horizontal" role="form" method="post" action="/addpatient/" name="newpatientform" id="newpatientform">
+        <form class="form-horizontal newpatientform" role="form" method="post" action="/addpatient/" id="newpatientform" name="newpatientform">
             {% csrf_token %}
             <fieldset>
 
@@ -83,27 +83,25 @@
               <label class="col-sm-2 control-label" >Patient Code:</label>
               <div class="col-sm-2">
                 <div class="input-group">
-                  <span class="input-group-addon">Gestation</span>
-                  <input id="p_codeG" name="p_codeG" class="form-control" placeholder="" type="number" required>
+                  <span class="input-group-addon">G</span>
+                  <input id="p_codeG" name="p_codeG" class="form-control" placeholder="" type="number">
                 </div>
               </div>
               <div class="col-sm-2">
                 <div class="input-group">
-                  <span class="input-group-addon">Pregnancy</span>
-                  <input id="p_codeP" name="p_codeP" class="form-control" placeholder="" type="number" required>
+                  <span class="input-group-addon">P</span>
+                  <input id="p_codeP" name="p_codeP" class="form-control" placeholder="" type="number">
                 </div>
               </div>
               <div class="col-sm-2">
                 <div class="input-group">
-                  <span class="input-group-addon">Abortion</span>
-                  <input id="p_codeA" name="p_codeA" class="form-control" placeholder="" type="number" required>
+                  <span class="input-group-addon">A</span>
+                  <input id="p_codeA" name="p_codeA" class="form-control" placeholder="" type="number">
                 </div>
               </div>
-                <!--
                 <div class="col-sm-8 col-sm-offset-2">
                     <p class="help-block">G: Gestation, P: Pregnancy, A: Abortion</p>
                 </div>
-                -->
             </div>
           <div class="form-group">
             <label for="p_age" class="col-sm-2 control-label">Patient Age:</label>
@@ -126,23 +124,23 @@
           <div class="form-group">
             <label for="p_phone" class="col-sm-2 control-label">Phone Number:</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="p_phone" name="p_phone" placeholder="Phone Number">
+              <input type="text" class="form-control" id="p_phone" name="p_phone" placeholder="Phone Number">
             </div>
           </div>
           <div class="form-group">
             <label for="p_Econtact" class="col-sm-2 control-label">Emergency Number:</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="p_Econtact" name="p_Econtact" placeholder="Emergency Number">
+              <input type="text" class="form-control" id="p_Econtact" name="p_Econtact" placeholder="Emergency Number">
             </div>
           </div>
           <div class="form-group">
-            <label for="p_email" class="col-sm-2 control-label">Phone Email:</label>
+            <label for="p_email" class="col-sm-2 control-label">Email:</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="p_email" name="p_email" placeholder="Phone Email">
+              <input type="email" class="form-control" id="p_email" name="p_email" placeholder="Email">
             </div>
           </div>
             <div class="form-group">
-              <label class="col-sm-2 control-label" for="p_state">status</label>
+              <label class="col-sm-2 control-label">status</label>
               <div class="col-md-4">
                 <label class="radio-inline" for="radios-0">
                   <input type="radio" name="p_state" id="radios-0" value="1" checked="checked">
@@ -183,7 +181,7 @@
 {% block user_foot_js %}
 {{ block.super }}
     <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-    <script src="{% static 'js/bootstrapValidator.min.js' %}"></script>
+    <script src="{% static 'js/bootstrapValidator.js' %}"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#newpatientform').bootstrapValidator({
@@ -199,6 +197,7 @@
                    fields: {
                         p_name: {
                             message: 'The name is not valid',
+                            enabled: true,
                             validators: {
                                 notEmpty: {
                                     message: 'The username is required and cannot be empty'
@@ -206,17 +205,101 @@
                                 stringLength: {
                                     min: 3,
                                     max: 50,
-                                    message: 'The username must be more than 3 and less than 30 characters long'
+                                    message: 'The username must be more than 3 and less than 50 characters long'
                                 }
                             }
                         },
-                        email: {
+                        p_LMP: {
+                            enabled: true,
                             validators: {
-                                notEmpty: {
-                                    message: 'The email is required and cannot be empty'
+                                date: {
+                                    format: 'MM/DD/YYYY',
+                                    message: 'The value is not a valid date'
                                 },
+                                notEmpty: {
+                                    message: 'The date is required and cannot be empty'
+                                }
+                            }
+                        },
+                        p_age: {
+                            enabled: true,
+                            validators: {
+                                digits: {
+                                    message: 'The value is not a valid number'
+                                },
+                                notEmpty: {
+                                    message: 'The username is required and cannot be empty'
+                                },
+                                greaterThan: {
+                                    message: 'The value must be greater than 15',
+                                    value: 15,
+                                    inclusive: false
+                                }
+                            }
+                        },
+                        p_codeG: {
+                            enabled: true,
+                            validators: {
+                                digits: {
+                                    message: 'The value is not a valid number'
+                                },
+                                notEmpty: {
+                                    message: 'The username is required and cannot be empty'
+                                },
+                                greaterThan: {
+                                    message: 'The value must be greater than 0',
+                                    value: 0,
+                                    inclusive: false
+                                }
+                            }
+                        },
+                        p_codeP: {
+                            enabled: true,
+                            validators: {
+                                digits: {
+                                    message: 'The value is not a valid number'
+                                },
+                                notEmpty: {
+                                    message: 'This field is required and cannot be empty'
+                                },
+                                lessThanField: {
+                                    message: 'The value must be smaller than Gestation',
+                                    field: 'p_codeG',
+                                    inclusive: true
+                                },
+                                greaterThan: {
+                                    message: 'The value must be greater than 0',
+                                    value: 0,
+                                    inclusive: false
+                                }
+                            }
+                        },
+                        p_codeA: {
+                            enabled: true,
+                            validators: {
+                                digits: {
+                                    message: 'The value is not a valid number'
+                                },
+                                notEmpty: {
+                                    message: 'This field is required and cannot be empty'
+                                },
+                                lessThanField: {
+                                    message: 'The value must be smaller than Gestation',
+                                    field: 'p_codeG',
+                                    inclusive: true
+                                },
+                                greaterThan: {
+                                    message: 'The value must be greater than 0',
+                                    value: 0,
+                                    inclusive: false
+                                }
+                            }
+                        },
+                        p_email: {
+                            enabled: true,
+                            validators: {
                                 emailAddress: {
-                                    message: 'The input is not a valid email address'
+                                    message: 'This is not a valid email address'
                                 }
                             }
                         }
