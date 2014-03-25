@@ -24,18 +24,6 @@
           margin-left: 10px;
         }
 
-
-      .table-responsive>.fixed-column {
-            position: absolute;
-            display: inline-block;
-            width: auto;
-            border-right: 1px solid #ddd;
-        }
-        @media(min-width:768px) {
-            .table-responsive>.fixed-column {
-                display: none;
-            }
-        }
     </style>
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/theme.dropbox.css' %}" />
@@ -79,7 +67,7 @@
     <div id="content">
       {% if True %}
         <div class="table-responsive">
-            <table class="table table-hover" id="patientTable">
+            <table class="table table-hover table-bordered" id="patientTable">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -176,19 +164,6 @@ $("#patientTable").tablesorter(
 });
 });
 
-            $(function(){
-                var $table = $('.table');
-                //Make a clone of our table
-                var $fixedColumn = $table.clone().insertBefore($table).addClass('fixed-column');
-
-                //Remove everything except for first column
-                $fixedColumn.find('th:not(:first-child),td:not(:first-child)').remove();
-
-                //Match the height of the rows to that of the original table's
-                $fixedColumn.find('tr').each(function (i, elem) {
-                    $(this).height($table.find('tr:eq(' + i + ')').height());
-                });
-            });
 </script>
 
 {% endblock %}
