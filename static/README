@@ -1,0 +1,8 @@
+引入的JS库的版本：
+jquery-2.1.1(min)
+underscore-1.6.0(min)
+backbone-1.1.2(min)
+backbone.paginator-2.0.0(min)
+backgrid-0.3.5
+backgrid-paginator-0.3.5(min)
+(其中backgrid-paginator.js来自于backbone.paginator的例子，不确定为何与主分支不兼容)

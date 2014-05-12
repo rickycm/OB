@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>这是一个测试</title>
+    <link rel="stylesheet" href="css/backgrid.css" />
+    <link rel="stylesheet" href="css/backgrid-paginator.min.css" />
+</head>
+<body>
+    让我们从这个测试开始。
+    <div id="patientList">
+        <li>abc</li>
+        <li>def</li>
+    </div>
+    <div id="grid"></div>
+    <div id="paginator"></div>
+
+<script type="text/template" id="patient-list-item">
+	<li><a href="#patients/<%= id %>"><%= p_name %></a></li>
+</script>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="js/backbone-min.js"></script>
+<script src="js/backbone.paginator.min.js"></script>
+<script src="js/backgrid.js"></script>
+<script src="js/backgrid-paginator.js"></script>
+<!--script src="main.js"></script-->
+<script>
+    var columns = [{
+        name: "id",
+        label: "ID",
+        cell: Backgrid.IntegerCell.extend({
+            orderSeparator: ''
+        }),
+    },{
+        name: "p_name",
+        label: "Name",
+        cell: "string"
+    }];
+
+    var Patients = Backbone.PageableCollection.extend({
+        url: "/patients",
+        mode: "client"
+    });
+
+    var patients = new Patients();
+
+    var grid = new Backgrid.Grid({
+        columns: columns,
+        collection: patients,
+    });
+
+    var paginator = new Backgrid.Extension.Paginator({
+        collection: patients,
+    });
+
+    $('#grid').append(grid.render().el);
+    $('#paginator').append(paginator.render().el);
+
+    patients.fetch({
+        reset:true,
+        error:function(model, response) {
+            message = JSON.parse(response.responseText);
+            // 具体怎么处理错误信息在这儿决定，不仅仅是输出到命令行上
+            console.log(message.detail);
+        }
+    });
+
+</script>
+
+</body>
+</html>
