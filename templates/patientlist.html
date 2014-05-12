@@ -76,8 +76,8 @@
 <div class="container">
     <div id="content">
 
-        <h2>Patient List</h2>
-        <div id="client-side-filter" style="float: right;"></div>
+        <h3 style="text-align:center">Patient List</h3>
+        <div id="client-side-filter"></div>
         <div id="grid"></div>
         <div id="paginator"></div>
 
@@ -188,8 +188,9 @@
       // How long to wait after typing has stopped before searching can start
       wait: 150
     });
-
     $('#client-side-filter').prepend(clientSideFilter.render().el);
+    // Add some space to the filter and move it to the right
+    $(clientSideFilter.el).css({float: "right", margin: "20px"});
 
     patients.fetch({
         reset:true,
