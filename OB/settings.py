@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for OB project.
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     'south',
     'obpacient',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,6 +64,15 @@ ROOT_URLCONF = 'OB.urls'
 
 WSGI_APPLICATION = 'OB.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        # 二选一即可。如果使用Unicode的话，JSON返回中的中文将保持原样。
+        'rest_framework.renderers.JSONRenderer',
+        #'rest_framework.renderers.UnicodeJSONRenderer',
+        # 下面这个配置供调试时使用，正式环境下应该被注释掉。
+        #'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

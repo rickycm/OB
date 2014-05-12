@@ -17,4 +17,6 @@ urlpatterns = patterns('',
     (r'^addpatient/$', views.add_patient),
     (r'^dashboard/$', views.dashboard),
     (r'^patientlist/$', views.list_patients),
+    (r'^patients/$', views.PatientList.as_view()),
+    (r'^patients/(?P<pk>[0-9]+)/$', views.PatientDetail.as_view()),
 )
