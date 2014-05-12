@@ -10,8 +10,8 @@
 {% block user_css %}
     <style type="text/css">
       body {
-        background-color: #f5f5f5;
-          padding-top: 60px;
+        //background-color: #f5f5f5;
+          padding-top: 50px;
           padding-bottom: 20px;
       }
 
@@ -26,14 +26,15 @@
 
     </style>
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/theme.dropbox.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/backgrid.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/backgrid-paginator.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/backgrid-filter.min.css' %}" />
 {% endblock %}
 
 
 {% block page_id %}login{% endblock %}
 
 {% block page_content %}
-
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -52,84 +53,33 @@
               <li class="active"><a href="/patientlist/">Patient List</a></li>
               <li><a href="#contact">Contact</a></li>
           </ul>
+          <ul class="nav navbar-nav navbar-right navbar-user">
             {% if user.is_authenticated and user != "" %}
-                <button type="button" class="btn btn-default navbar-btn navbar-right">Sign in</button>
-                <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">{{ user.username }}</a>
-                </p>
-                {% else %}
-
-                {% endif %}
+              <li class="dropdown user-dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ user.username }} <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                    <li><a href="#"><i class="fa fa-envelope"></i> Due Date <span class="badge">3</span></a></li>
+                    <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/accounts/logout/"><i class="fa fa-power-off"></i> Log Out</a></li>
+                  </ul>
+              </li>
+            {% else %}
+                <li><button type="button" class="btn btn-default navbar-btn navbar-right" onclick="window.location.href='/accounts/login/'"> Log in </button></li>
+            {% endif %}
+          </ul>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
 
 <div class="container">
     <div id="content">
-      {% if True %}
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered" id="patientTable">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Code</th>
-                        <th>Age</th>
-                        <th>LMP</th>
-                        <th>EDC</th>
-                        <th>Conception</th>
-                        <th>State</th>
-                        <th data-sorter="false">Disease History</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for patient in patients %}
-                    <tr>
-                        <td>{{ patient.p_name }}</td>
-                        <td>{{ patient.p_code }}</td>
-                        <td>{{ patient.p_age }}</td>
-                        <td>{{ patient.p_LMP|date:"Y-m-d" }}</td>
-                        <td>{{ patient.p_EDC|date:"Y-m-d" }}</td>
-                        <td>{{ patient.p_conception|date:"Y-m-d" }}</td>
-                        <td>
-                            {% if patient.p_state == 1 %}
-                            <font color="SteelBlue">{{ patient.get_p_state_display }}</font>
-                            {% elif patient.p_state == 2 %}
-                            <font color="Aquamarine">{{ patient.get_p_state_display }}</font>
-                            {% elif patient.p_state == 3 %}
-                            <font color="Tomato"><strong>{{ patient.get_p_state_display }}</strong></font>
-                            {% elif patient.p_state == 4 %}
-                            <font color="Orange">{{ patient.get_p_state_display }}</font>
-                            {% endif %}
-                        </td>
-                        <td>{{ patient.p_diseaseHis }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <p></p>
-    <div style="text-align:center">
-        {% ifnotequal curPage 1 %}
-            <a href="?curPage={{ curPage }}&&allPage={{ allPage }}&&pageType=pageUp&&type={{type}}">
-                Prev
-            </a>
-        {% endifnotequal %}
 
-        Page:{{ curPage }}/{{ allPage }}
-
-        {% if curPage < allPage %}
-            <a href="?curPage={{ curPage }}&&allPage={{ allPage }}&&pageType=pageDown&&type={{type}}">
-                Next
-            </a>
-        {% endif %}
-    </div>
-    <p></p>
-
-      {% else %}
-         <p></p>
-         <div style="text-align:center">
-             <P>You don't have any patient now.</P>
-         </div>
-      {% endif %}
+        <h2>Patient List</h2>
+        <div id="client-side-filter" style="float: right;"></div>
+        <div id="grid"></div>
+        <div id="paginator"></div>
 
     </div>
 </div> <!-- /container -->
@@ -139,31 +89,117 @@
 
 {% block user_foot_js %}
 {{ block.super }}
-    <script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
-    <script src="{% static 'js/jquery.tablesorter.widgets.min.js' %}"></script>
+<script type="text/template" id="patient-list-item">
+	<li><a href="#patients/<%= id %>"><%= p_name %></a></li>
+	<li><a href="#patients/<%= id %>"><%= p_code %></a></li>
+	<li><a href="#patients/<%= id %>"><%= p_age %></a></li>
+	<li><a href="#patients/<%= id %>"><%= p_LMP %></a></li>
+</script>
+<script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+<script src="{% static 'js/underscore-min.js' %}"></script>
+<script src="{% static 'js/backbone-min.js' %}"></script>
+<script src="{% static 'js/backbone.paginator.min.js' %}"></script>
+<script src="{% static 'js/backgrid.js' %}"></script>
+<script src="{% static 'js/backgrid-paginator.js' %}"></script>
+<script src="{% static 'js/backgrid-filter.min.js' %}"></script>
+<!--script src="main.js"></script-->
 <script>
-$(document).ready(function(){
-$(function(){
-$("#patientTable").tablesorter(
-{
-	theme : 'dropbox',
+    var columns = [{
+        name: "id",
+        label: "ID",
+        editable: false,
+        cell: Backgrid.IntegerCell.extend({
+            orderSeparator: ''
+        }),
+    },{
+        name: "p_name",
+        label: "Name",
+        editable: false,
+        cell: "string"
+    },{
+        name: "p_code",
+        label: "CODE",
+        editable: false,
+        cell: "string"
+    },{
+        name: "p_age",
+        label: "Age",
+        editable: false,
+        cell: "integer"
+    },{
+        name: "p_LMP",
+        label: "LMP",
+        editable: false,
+        cell: "date"
+    },{
+        name: "p_EDC",
+        label: "EDC",
+        editable: false,
+        cell: "date"
+    },{
+        name: "p_conception",
+        label: "conception",
+        editable: false,
+        cell: "date"
+    },{
+        name: "p_state",
+        label: "p_state",
+        editable: false,
+        cell: Backgrid.SelectCell.extend({
+          // It's possible to render an option group or use a
+          // function to provide option values too.
+          optionValues: [["<font color='Tomato'>Due Date</font>", "1"], ["<font color='Orange'>Pregnant</font>", "3"],
+            ["<font color='Aquamarine'>Aborted</font>", "11"], ["<font color='SteelBlue'>Delivered</font>", "12"], ["C", "13"]]
+        })
+    }];
 
-	sortList : [[4,0],[6,0]],
+    var Patients = Backbone.PageableCollection.extend({
+        url: "/patients",
+        state: {
+            pageSize: 10
+        },
+        mode: "client"
+    });
 
-    // header layout template; {icon} needed for some themes
-    headerTemplate : '{content}{icon}',
+    var patients = new Patients();
 
-	// initialize column styling of the table
-    widgets : ["columns"],
-	widgetOptions : {
-      // change the default column class names
-      // primary is the first column sorted, secondary is the second, tertiary....etc
-      columns : [ "primary", "secondary" ]
-	}
-});
-});
-});
+    var grid = new Backgrid.Grid({
+        columns: columns,
+        collection: patients,
+        emptyText: "No Patient"
+    });
+
+    var paginator = new Backgrid.Extension.Paginator({
+        collection: patients,
+    });
+    grid.render().sort("p_state", "ascending");
+
+    $('#grid').append(grid.render().el);
+    $('#paginator').append(paginator.render().el);
+
+    // ClientSideFilter performs a case-insensitive regular
+    // expression search on the client side by OR-ing the keywords in
+    // the search box together.
+    var clientSideFilter = new Backgrid.Extension.ClientSideFilter({
+      collection: patients,
+      placeholder: "Search patient by Name",
+      // The model fields to search for matches
+      fields: ['p_name'],
+      // How long to wait after typing has stopped before searching can start
+      wait: 150
+    });
+
+    $('#client-side-filter').prepend(clientSideFilter.render().el);
+
+    patients.fetch({
+        reset:true,
+        error:function(model, response) {
+            message = JSON.parse(response.responseText);
+            // 具体怎么处理错误信息在这儿决定，不仅仅是输出到命令行上
+            console.log(message.detail);
+        }
+    });
+
 
 </script>
-
 {% endblock %}
