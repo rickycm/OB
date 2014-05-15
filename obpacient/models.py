@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-PSTATE = [(1, u'Pregnancy'), (3, u'Due Date'), (11, u'Delivered'), (12, u'Aborted'), (13, u'c')]
+PSTATE = [(1, u'Due Date'), (3, u'Pregnant'), (11, u'Aborted'), (12, u'Delivered'), (13, u'c')]
 
 class patient(models.Model):
     p_name = models.CharField(max_length=200, blank=True, null=True)
