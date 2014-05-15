@@ -89,12 +89,6 @@
 
 {% block user_foot_js %}
 {{ block.super }}
-<script type="text/template" id="patient-list-item">
-	<li><a href="#patients/<%= id %>"><%= p_name %></a></li>
-	<li><a href="#patients/<%= id %>"><%= p_code %></a></li>
-	<li><a href="#patients/<%= id %>"><%= p_age %></a></li>
-	<li><a href="#patients/<%= id %>"><%= p_LMP %></a></li>
-</script>
 <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
 <script src="{% static 'js/underscore-min.js' %}"></script>
 <script src="{% static 'js/backbone-min.js' %}"></script>
@@ -102,7 +96,15 @@
 <script src="{% static 'js/backgrid.js' %}"></script>
 <script src="{% static 'js/backgrid-paginator.js' %}"></script>
 <script src="{% static 'js/backgrid-filter.min.js' %}"></script>
-<!--script src="main.js"></script-->
+<!-- 因为不使用旧的框架模式，本注释段落应该被整体删去。
+<script type="text/template" id="patient-list-item">
+	<li><a href="#patients/<%= id %>"><%= p_name %></a></li>
+	<li><a href="#patients/<%= id %>"><%= p_code %></a></li>
+	<li><a href="#patients/<%= id %>"><%= p_age %></a></li>
+	<li><a href="#patients/<%= id %>"><%= p_LMP %></a></li>
+</script>
+<script src="main.js"></script>-->
+
 <script>
     var columns = [{
         name: "id",
